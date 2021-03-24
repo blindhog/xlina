@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from xlina import print_list,generate_header_h1,group_acls_objects
+from xlina import Xlina
 import argparse
 
 argparser = argparse.ArgumentParser()
@@ -12,8 +12,9 @@ if args.file:
 
 
 def main(file):
-    print_list(generate_header_h1('Organized ACLs and associated Objects'))
-    print_list(group_acls_objects(file))
+    xlina = Xlina()
+    xlina.print_list(xlina.generate_header_h1('Organized ACLs and associated Objects'))
+    xlina.print_list(xlina.group_acls_objects(file))
     
 
 if '__main__' in __name__:
