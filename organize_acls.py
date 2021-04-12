@@ -1,21 +1,18 @@
 #!/usr/bin/env python3
 
-from xlina import Xlina
+import xlina
 import argparse
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-f','--file',help='ASA Config Input file',required=True)
+argparser.add_argument('-f','--files',help='ASA Config Input file',required=True,nargs='*')
 
 args = argparser.parse_args()
-if args.file:
-    file = args.file 
+if args.files:
+    file_list = args.files
 
 
-def main(file):
-    xlina = Xlina()
-    xlina.print_list(xlina.generate_header_h1('Organized ACLs and associated Objects'))
-    xlina.print_list(xlina.group_acls_objects(file))
+for config in file_list:
+    x = xlina.LINA()
+    x.print_list(x.generate_header_h1('Organized ACLs and associated Objects'))
+    x.print_list(x.group_acls_objects(config))
     
-
-if '__main__' in __name__:
-    main(file)
