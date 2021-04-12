@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from xlina import print_list,generate_header_h1,group_crypto_map_config
+from xlina import Xlina
 import argparse
 
 argparser = argparse.ArgumentParser()
@@ -12,8 +12,9 @@ if args.file:
 
 
 def main(file):
-    print_list(generate_header_h1('Organized L2L IPSec Configuration'))
-    print_list(group_crypto_map_config(file))
+    xlina = Xlina()
+    xlina.print_list(xlina.generate_header_h1('Organized L2L IPSec Configuration'))
+    xlina.print_list(xlina.group_crypto_map_config(file))
     
     
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from xlina import print_list,generate_header_h1,group_static_nat_config
+import xlina
 import argparse
 
 argparser = argparse.ArgumentParser()
@@ -12,12 +12,8 @@ if args.file:
 
 
 def main(file):
-    print_list(generate_header_h1('Organized Static NAT Configuration'))
-    #print(group_crypto_map_config(file, 'CRYPTO_MAP', '145'))
-    #print_list(group_crypto_map_config(file, 'CRYPTO_MAP'))
-    print_list(group_static_nat_config(file))
-    
-    
-
+    x = xlina.Xlina
+    x.print_list(x.generate_header_h1('Organized Static NAT Configuration'))
+    x.print_list(x.group_static_nat_config(file))
 if '__main__' in __name__:
     main(file)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from xlina import print_list,generate_header_h1,group_anyconnect_config
+import xlina
 import argparse
 
 argparser = argparse.ArgumentParser()
@@ -11,9 +11,9 @@ if args.file:
     file = args.file 
 
 
-def main(file):
-    print_list(generate_header_h1('Organized Anyconnect Configuration'))
-    print_list(group_anyconnect_config(file))
+x = xlina.LINA()
+x.print_list(x.generate_header_h1('Organized Anyconnect Configuration'))
+x.print_list(x.group_anyconnect_config(file))
     
     
 
