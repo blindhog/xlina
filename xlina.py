@@ -214,7 +214,6 @@ class LINA:
                     output_list.append('!')
             # Add access-list to the acl+object output.
             output_list.append("{}".format(acl))
-        print(output_list)
         return output_list
 
     def build_crypto_map_dict(self,config, crypto_map_name=None, crypto_map_seq=None):
