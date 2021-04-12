@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from xlina import Xlina
+import xlina
 import argparse
 
 argparser = argparse.ArgumentParser()
@@ -12,9 +12,8 @@ if args.file:
 
 
 def main(file):
-    xlina = Xlina()
-    xlina.print_list(xlina.generate_header_h1('Organized Static NAT Configuration'))
-    xlina.print_list(xlina.group_static_nat_config(file))
-    
+    x = xlina.Xlina
+    x.print_list(x.generate_header_h1('Organized Static NAT Configuration'))
+    x.print_list(x.group_static_nat_config(file))
 if '__main__' in __name__:
     main(file)
