@@ -2,19 +2,26 @@
 
 import xlina
 import argparse
+from ciscoconfparse import CiscoConfParse
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-f','--files',help='ASA Config Input file',required=True,nargs='*')
+argparser.add_argument('-f','--files',help='ASA Config Input files',required=True,nargs="*")
 
 args = argparser.parse_args()
+
 if args.files:
     file_list = args.files
 
+
 def main(file_list):
-    for config in file_list:
+    for file in file_list:
         x = xlina.LINA()
-        x.print_list(x.generate_header_h1('Organized ACLs and associated Objects'))
-        x.print_list(x.group_acls_objects(config))
-    
+        hostname = ''
+        confparse = CiscoConfParse(file)
+        hostname = confparse.find_lines('^hostname')[0].split(' ')[1]
+        x.print_list(x.generate_header_h1('{} - Organized ACLs and associated Objects -'.format(hostname)))
+        x.print_list(x.group_acls_objects(file))
+   
 if '__main__' in __name__:
     main(file_list)
+    
