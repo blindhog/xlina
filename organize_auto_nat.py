@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from xlina import Xlina
+import xlina
 import argparse
 
 argparser = argparse.ArgumentParser()
@@ -12,9 +12,9 @@ if args.file:
 
 
 def main(file):
-    xlina = Xlina()
-    xlina.print_list(xlina.generate_header_h1('Organized Auto NAT Configuration'))
-    xlina.print_list(xlina.group_auto_nat_config(file))
+    x = xlina.LINA()
+    x.print_list(x.generate_header_h1('Organized Auto NAT Configuration'))
+    x.print_list(x.group_auto_nat_config(file))
     
     
 
