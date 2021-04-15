@@ -8,7 +8,7 @@ class LINA:
         header_list = []
         header_list.append('\n\n')
         header_list.append('############################################################')
-        header_list.append('# \'{}\''.format(text))
+        header_list.append('# {}'.format(text))
         header_list.append('############################################################')
         return header_list
 
@@ -16,8 +16,8 @@ class LINA:
         header_list = []
         header_list.append('\n\n')
         header_list.append('!------------------------------------------------------------!')
-        header_list.append('! \'{}\''.format(text))
-        header_list.append('!------------------------------------------------------------!')
+        header_list.append('! {}'.format(text))
+        header_list.append('!------------------------------------------------------------!\n')
         return header_list
 
     def print_list (self,input_list):
@@ -212,6 +212,7 @@ class LINA:
                     for child in object_children:
                         output_list.append(child)    
                     output_list.append('!')
+            # output_list.append('!')
             # Add access-list to the acl+object output.
             output_list.append("{}".format(acl))
         return output_list

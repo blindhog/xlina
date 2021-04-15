@@ -2,18 +2,26 @@
 
 import xlina
 import argparse
+from ciscoconfparse import CiscoConfParse
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-f','--file',help='ASA Config Input file',required=True)
+argparser.add_argument('-f','--files',help='ASA Config Input files',required=True,nargs="*")
 
 args = argparser.parse_args()
-if args.file:
-    file = args.file 
+
+if args.files:
+    file_list = args.files
 
 
-def main(file):
-    x = xlina.Xlina
-    x.print_list(x.generate_header_h1('Organized Static NAT Configuration'))
-    x.print_list(x.group_static_nat_config(file))
+def main(file_list):
+    for file in file_list:
+        x = xlina.LINA()
+        hostname = ''
+        confparse = CiscoConfParse(file)
+        hostname = confparse.find_lines('^hostname')[0].split(' ')[1]
+        x.print_list(x.generate_header_h1('{} - Organized Static NAT Configuration -'.format(hostname)))
+        x.print_list(x.group_static_nat_config(file))
+
 if '__main__' in __name__:
-    main(file)
+    main(file_list)
+    
