@@ -174,18 +174,16 @@ class LINA:
         if acl_name == '':
             print_headers = True
         confparse = CiscoConfParse(config)
-        for acl in confparse.find_lines('^access-list {}'.format(acl_name.strip())):
+
+        if hitcnt == True:
+            print('^access-list.*hitcnt')
+            acls = confparse.find_lines('^access-list {}.*hitcnt'.format(acl_name.strip()))
+        else:
+            acls = confparse.find_lines('^access-list {}'.format(acl_name.strip()))
+
+        for acl in acls:
             # Clean new-line characters from ASA output
             acl = re.sub('\n+','',acl)
-            if hitcnt is True:
-                if 'hitcnt' in acl:
-                    continue
-            else:
-                if 'hitcnt' in acl:
-                    break
-            if 'name hash' in acl:
-                break
-            # Split the ACL into a list
             acl_split = acl.split()
             acl_name = re.sub(';','',acl_split[1])
 
@@ -196,6 +194,7 @@ class LINA:
                     output_list += self.generate_header_h2(acl_name)
                 previous_acl_name = acl_name
             else:
+                print(acl)
                 if 'object' in acl:
                     output_list.append("!")
             for position, item in enumerate(acl_split):
