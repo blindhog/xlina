@@ -176,7 +176,6 @@ class LINA:
         confparse = CiscoConfParse(config)
 
         if hitcnt == True:
-            print('^access-list.*hitcnt')
             acls = confparse.find_lines('^access-list {}.*hitcnt'.format(acl_name.strip()))
         else:
             acls = confparse.find_lines('^access-list {}'.format(acl_name.strip()))
@@ -186,6 +185,11 @@ class LINA:
             acl = re.sub('\n+','',acl)
             acl_split = acl.split()
             acl_name = re.sub(';','',acl_split[1])
+            
+            if "hitcnt=0" in acl:
+                acl_prefix = "! "
+            else:
+                acl_prefix = ""
 
             if acl_name != previous_acl_name:
                 acl_name = re.sub('name hash:.*','',acl_name)
@@ -207,13 +211,13 @@ class LINA:
                             net_object_name = child.split()[-1]
                             net_object_config = confparse.find_all_children(r'^object.*{}(\s|$)'.format(net_object_name))
                             for line in net_object_config:
-                                output_list.append(line)
+                                output_list.append("{}{}".format(acl_prefix,line))
                     for child in object_children:
-                        output_list.append(child)    
+                        output_list.append("{}{}".format(acl_prefix,child))    
                     output_list.append('!')
             # output_list.append('!')
             # Add access-list to the acl+object output.
-            output_list.append("{}".format(acl))
+            output_list.append("{}{}".format(acl_prefix,acl))
         return output_list
 
     def build_crypto_map_dict(self,config, crypto_map_name=None, crypto_map_seq=None):
