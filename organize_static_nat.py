@@ -17,7 +17,7 @@ def main(file_list):
     for file in file_list:
         x = xlina.LINA()
         hostname = ''
-        confparse = CiscoConfParse(file)
+        confparse = CiscoConfParse(file, syntax='asa')
         hostname = confparse.find_lines('^hostname')[0].split(' ')[1]
         x.print_list(x.generate_header_h1('{} - Organized Static NAT Configuration -'.format(hostname)))
         x.print_list(x.group_static_nat_config(file))
