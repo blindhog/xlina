@@ -404,6 +404,33 @@ class LINA:
                         grouped_configs.append(obj_line)
                     grouped_configs.append('!')
                     previous_nat_object = nat_object
+            nat_split = line.split()
+            for position, item in enumerate(nat_split):
+                if item == 'service':
+                    service_obj1_position = position + 1
+                    service_obj1_name = nat_split[service_obj1_position]
+                    service_obj1_children = confparse.find_all_children(r'^object.*{}(\s|$)'.format(service_obj1_name))
+                    for child in service_obj1_children:
+                        if ('object object' in child) or ('group-object' in child):
+                            net_object_name = child.split()[-1]
+                            net_object_config = confparse.find_all_children(r'^object.*{}(\s|$)'.format(net_object_name))
+                            for line in net_object_config:
+                                grouped_configs.append(line)
+                    for child in service_obj1_children:
+                        grouped_configs.append(child)
+                    grouped_configs.append('!')
+                    service_obj2_position = position + 2
+                    service_obj2_name = nat_split[service_obj2_position]
+                    service_obj2_children = confparse.find_all_children(r'^object.*{}(\s|$)'.format(service_obj2_name))
+                    for child in service_obj2_children:
+                        if ('object object' in child) or ('group-object' in child):
+                            net_object_name = child.split()[-1]
+                            net_object_config = confparse.find_all_children(r'^object.*{}(\s|$)'.format(net_object_name))
+                            for line in net_object_config:
+                                grouped_configs.append(line)
+                    for child in service_obj2_children:
+                        grouped_configs.append(child)
+                    grouped_configs.append('!')
             grouped_configs.append('!')
             grouped_configs.append(line)
             grouped_configs.append('\n\n!---\n\n')
