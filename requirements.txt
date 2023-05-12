@@ -1,1 +1,3 @@
 ciscoconfparse
+textfsm
+ntc_templates

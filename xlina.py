@@ -174,20 +174,22 @@ class LINA:
         if acl_name == '':
             print_headers = True
         confparse = CiscoConfParse(config)
-        for acl in confparse.find_lines('^access-list {}'.format(acl_name.strip())):
+
+        if hitcnt == True:
+            acls = confparse.find_lines('^access-list {}.*hitcnt'.format(acl_name.strip()))
+        else:
+            acls = confparse.find_lines('^access-list {}'.format(acl_name.strip()))
+
+        for acl in acls:
             # Clean new-line characters from ASA output
             acl = re.sub('\n+','',acl)
-            if hitcnt is True:
-                if 'hitcnt' in acl:
-                    continue
-            else:
-                if 'hitcnt' in acl:
-                    break
-            if 'name hash' in acl:
-                break
-            # Split the ACL into a list
             acl_split = acl.split()
             acl_name = re.sub(';','',acl_split[1])
+            
+            if "hitcnt=0" in acl:
+                acl_prefix = "! "
+            else:
+                acl_prefix = ""
 
             if acl_name != previous_acl_name:
                 acl_name = re.sub('name hash:.*','',acl_name)
@@ -196,6 +198,7 @@ class LINA:
                     output_list += self.generate_header_h2(acl_name)
                 previous_acl_name = acl_name
             else:
+                print(acl)
                 if 'object' in acl:
                     output_list.append("!")
             for position, item in enumerate(acl_split):
@@ -208,13 +211,13 @@ class LINA:
                             net_object_name = child.split()[-1]
                             net_object_config = confparse.find_all_children(r'^object.*{}(\s|$)'.format(net_object_name))
                             for line in net_object_config:
-                                output_list.append(line)
+                                output_list.append("{}{}".format(acl_prefix,line))
                     for child in object_children:
-                        output_list.append(child)    
+                        output_list.append("{}{}".format(acl_prefix,child))    
                     output_list.append('!')
             # output_list.append('!')
             # Add access-list to the acl+object output.
-            output_list.append("{}".format(acl))
+            output_list.append("{}{}".format(acl_prefix,acl))
         return output_list
 
     def build_crypto_map_dict(self,config, crypto_map_name=None, crypto_map_seq=None):
